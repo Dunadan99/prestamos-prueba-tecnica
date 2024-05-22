@@ -15,7 +15,7 @@ export default function IndexLogin() {
   };
 
   const [reqs, setReqs] = useState({ ...baseInfo });
-  const [status, setStatus] = useState(Status.NOT_SUBMITTED);
+  const [status, setStatus] = useState(Status.LOADING);
   const [error, setError] = useState('' as string);
 
   useEffect(() => {
@@ -64,9 +64,11 @@ export default function IndexLogin() {
           <div className='flex flex-col space-y-4'>
             <TextInput
               name='user'
+              type='text'
               text={reqs.user}
               setText={handleChange}
               placeholder='Usuario'
+              showError={false}
             />
             <TextInput
               name='password'
@@ -74,6 +76,7 @@ export default function IndexLogin() {
               text={reqs.password}
               setText={handleChange}
               placeholder='Contraseña'
+              showError={false}
             />
           </div>
       </div>
@@ -87,7 +90,7 @@ export default function IndexLogin() {
           className='big-button mt-1 flex justify-center'
           onClick={handleSubmit}
         >
-          {status === Status.LOADING ? <Spinner classes=''/> : 'Confirmar'}
+          {status === Status.LOADING ? <Spinner classes='h-7'/> : 'Confirmar'}
         </button>
       </div>
     </div>

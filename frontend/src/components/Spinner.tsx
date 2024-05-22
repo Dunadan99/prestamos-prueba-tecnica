@@ -1,12 +1,12 @@
 interface SpinnerProps {
-  classes?: string;
+  classes: string;
 }
 
-const Spinner: React.FC<SpinnerProps> = (classes) => {
+const Spinner: React.FC<SpinnerProps> = ({classes}) => {
   return (
     <>
       <svg
-        className={classes + ' h-7 animate-spin'}
+        className={`animate-spin ${classes}`}
         xmlns='http://www.w3.org/2000/svg'
         fill='none'
         viewBox='0 0 24 24'

@@ -40,3 +40,12 @@ export function getErrorMessage(error: AxiosError): string {
   }
   return 'Ups! Ocurrió un error';
 }
+
+export const validators = {
+  isValidUser: (user: string) => (/^[a-zA-Z0-9_-]+$/.test(user) || validators.isValidEmail(user)) && user.length < 100,
+  isValidPass: (pass: string) => /[a-z]/.test(pass) && /[A-Z]/.test(pass) && /[0-9]/.test(pass)
+    && pass.length >= 8 && pass.length <= 30,
+  isValidName: (name: string) => /^[a-zA-ZÀ-ÖØ-öø-ÿ ]+$/.test(name) && name.length < 100,
+  isValidDNI: (dni: string) => /^[0-9]{7,9}$/.test(dni),
+  isValidEmail: (email: string) => /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email) && email.length < 100,
+};

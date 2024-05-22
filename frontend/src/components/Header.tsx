@@ -12,6 +12,9 @@ export default function Header() {
       case path.match(/solicitudes/)?.input:
         return { route: '/', text: 'Cerrar Sesión' };
       default:
+        if (localStorage.getItem('token')) {
+          return { route: '/solicitudes', text: 'Ver solicitudes' };
+        }
         return { route: '/login', text: 'Iniciar sesión' };
     }
   }
@@ -26,11 +29,16 @@ export default function Header() {
   }
 
   return (
-    <header className='bg-white py-3 text-white flex flex-row justify-between align-middle px-28'>
+    <header className='bg-white py-3 opacity-85 hover:opacity-100
+    text-white flex flex-row justify-between align-middle px-28'
+    >
       <button onClick={() => navigate('/')} className='cursor-pointer'>
-        <img src='/icons/moni-logo.svg' alt='logo' className='h-10 '/>
+        <img src='/icons/moni-logo.svg' alt='logo' className='h-10 ' />
       </button>
-      <button onClick={() => handleClick(getInfo().route)} className='login-button'>
+      <button
+        onClick={() => handleClick(getInfo().route)}
+        className='login-button'
+      >
         {getInfo().text}
       </button>
     </header>

@@ -21,6 +21,7 @@ export default function IndexSolicitudList() {
   const [debouncedSearch, setDebouncedSearch] = useState('' as string);
 
   const [solicitudes, setSolicitudes] = useState([] as Solicitud[]);
+  const [deletingId, setDeletingId] = useState(-1 as number);
 
   // Debounce search
   useEffect(() => {
@@ -50,9 +51,11 @@ export default function IndexSolicitudList() {
   }, [navigate, debouncedSearch, page]);
 
   function handleDelete(id: number) {
+    setDeletingId(id);
     deleteSolicitud(id.toString())
       .then(() => {
         setSolicitudes(solicitudes.filter((solicitud) => solicitud.id !== id));
+        setDeletingId(-1);
       })
       .catch((e: AxiosError) => {
         if (e.response?.status === 401) {
@@ -63,20 +66,27 @@ export default function IndexSolicitudList() {
   }
 
   const solicitudesList = solicitudes.map((solicitud) => (
-    <SolicitudItem key={solicitud.id} sol={{...solicitud}} handleDelete={handleDelete} />
+    <SolicitudItem
+      key={solicitud.id}
+      sol={{...solicitud}}
+      isDeleting={deletingId === solicitud.id}
+      handleDelete={handleDelete}
+    />
   ));
 
   return (
     <div className='w-full flex flex-col justify-between-dashboard space-y-3'>
       <TextInput
         text={search}
+        type='text'
         name='search'
         setText={(e: any) => setSearch(e.target.value)}
         placeholder='Buscar por nombre, apellido o DNI'
+        showError={false}
       />
       <div className='flex flex-col space-y-2'>{
         status === Status.LOADING
-          ? <div className='flex flex-col justify-center'><Spinner classes='text-moni-blue' /></div>
+          ? <div className='flex flex-col justify-center'><Spinner classes='h-28 text-moni-blue'/></div>
           : (
             solicitudes.length === 0
             ? <h2 className='text-center text-moni-lightblue'>No hay solicitudes</h2>

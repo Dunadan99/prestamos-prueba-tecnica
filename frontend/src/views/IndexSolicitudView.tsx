@@ -33,8 +33,17 @@ export default function IndexSolicitudes() {
 
   function handleSubmit() {
     setStatus(Status.LOADING);
+
+    if (
+      error ||
+      Object.values(sol).some((it) => typeof it !== 'boolean' && !it) ||
+      !idSol
+    ) {
+      setStatus(Status.ERROR);
+      return;
+    }
     // Update solicitud
-    patchSolicitud(sol.id.toString(), sol)
+    patchSolicitud(idSol.toString(), sol)
       .then(() => {
         navigate('/solicitudes');
       })
@@ -43,6 +52,12 @@ export default function IndexSolicitudes() {
         setError(getErrorMessage(e));
       });
   }
+
+  const handleError = (e: string) => {
+    if (!error) {
+      setError(e);
+    }
+  };
 
   useEffect(() => {
     if (!idSol) {
@@ -53,30 +68,49 @@ export default function IndexSolicitudes() {
     // Fetch solicitud
     fetchSolicitud(idSol)
       .then((res) => {
-        setSol(res);
+        setSol({...res});
       })
       .catch(() => {
         navigate('/solicitudes');
       });
   }, [idSol, navigate]);
 
+  if (Object.keys(sol).length === 0) {
+    return (
+      <div className='flex flex-col h-full justify-center items-middle'>
+        <Spinner classes='h-28 text-moni-blue' />
+      </div>
+    );
+  }
+
   return (
     <div className='justify-between-dashboard'>
       <div className='flex flex-col align-items-middle space-y-4'>
         <p className='font-extrabold text-2xl text-moni-blue text-center'>
-          Editando solicitud {'#' + sol.id}
+          Editando solicitud {'#' + idSol}
         </p>
-        <SolicitudForm reqs={sol} handleChange={handleChange} />
+        <SolicitudForm
+          reqs={sol}
+          status={status}
+          handleChange={handleChange}
+          setError={handleError}
+        />
       </div>
 
       {/* Botón de confirmación */}
       <div className='mt-14'>
-        <div className='text-center text-moni-error italic'>{error}</div>
+        <div className='text-center text-moni-error italic'>
+          {status === Status.ERROR ? error : ''}
+        </div>
         <button
           className='big-button mt-1 flex justify-center'
           onClick={handleSubmit}
         >
-          {status === Status.LOADING ? <Spinner /> : 'Confirmar'}
+          {status === Status.LOADING ? (
+            <Spinner classes='h-7 text-white' />
+          ) : (
+            'Confirmar'
+          )}
         </button>
       </div>
     </div>

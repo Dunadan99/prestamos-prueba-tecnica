@@ -3,13 +3,14 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator, validate_email
 
 from solicitudes.utils import Gender
+from solicitudes.validators import validate_only_letters
 
 
 class Solicitud(models.Model):
     id = models.AutoField(primary_key=True)
     creation_date = models.DateTimeField(auto_now_add=True)
-    first_name = models.CharField(max_length=50, null=False, blank=False)
-    last_name = models.CharField(max_length=50, null=False, blank=False)
+    first_name = models.CharField(validators=[validate_only_letters], max_length=50, null=False, blank=False)
+    last_name = models.CharField(validators=[validate_only_letters], max_length=50, null=False, blank=False)
     email = models.EmailField(validators=[validate_email], max_length=100, null=False, blank=False)
     gender = models.CharField(max_length=20, choices=Gender, null=False, blank=False)
     granted = models.BooleanField(default=False)

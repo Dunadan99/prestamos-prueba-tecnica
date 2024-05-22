@@ -1,13 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { Solicitud, getGender } from '../types/Solicitud';
 import { priceFormatter, formatDate, formatTime } from '../utils';
+import Spinner from './Spinner';
 
 interface SolicitudItemProps {
   sol: Solicitud;
   handleDelete: (id: number) => void;
+  isDeleting: boolean;
 }
 
-const SolicitudItem: React.FC<SolicitudItemProps> = ({sol, handleDelete}) => {
+const SolicitudItem: React.FC<SolicitudItemProps> = ({sol, handleDelete, isDeleting}) => {
   const navigate = useNavigate();
 
   function handleEdit(id: number) {
@@ -19,7 +21,7 @@ const SolicitudItem: React.FC<SolicitudItemProps> = ({sol, handleDelete}) => {
   }
 
   return (
-    <div key={sol.id} className='solicitud-card hover:bg-gray-100'>
+    <div key={sol.id} className='solicitud-card'>
       {/* Nombre y Precio */}
       <div className='flex flex-row justify-between'>
         <h3 className='font-extrabold'>{sol.first_name} {sol.last_name}</h3>
@@ -47,11 +49,11 @@ const SolicitudItem: React.FC<SolicitudItemProps> = ({sol, handleDelete}) => {
 
         {/* Opciones */}
         <div className='flex flex-row space-x-2'>
-          <button className='base-button-white' onClick={() => handleEdit(sol.id)}>
+          <button className='base-button-white w-20' onClick={() => handleEdit(sol.id)}>
             Editar
           </button>
-          <button className='delete-button' onClick={() => handleDelete(sol.id)}>
-            Borrar
+          <button className='delete-button w-20' onClick={() => handleDelete(sol.id)}>
+            {isDeleting ? <Spinner classes='text-white h-4' /> : 'Borrar'}
           </button>
         </div>
       </div>

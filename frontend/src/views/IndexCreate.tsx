@@ -6,6 +6,8 @@ import SolicitudForm from '../components/SolicitudForm';
 import { Status } from '../types/Auth';
 import { AxiosError } from 'axios';
 import { getErrorMessage } from '../utils';
+import Check from '../components/Check';
+import X from '../components/X';
 
 export default function IndexCreate() {
   const baseInfo = {
@@ -18,7 +20,7 @@ export default function IndexCreate() {
   } as SolicitudReq;
 
   const [reqs, setReqs] = useState({ ...baseInfo });
-  const [res, setRes] = useState({} as Solicitud);
+  const [res, setRes] = useState({...baseInfo, id: 0} as Solicitud);
 
   const [status, setStatus] = useState(Status.NOT_SUBMITTED);
   const [error, setError] = useState('' as string);
@@ -37,6 +39,11 @@ export default function IndexCreate() {
 
   function handleSubmit() {
     setStatus(Status.LOADING);
+
+    if (error || Object.values(reqs).some((it) => !it)) {
+      setStatus(Status.ERROR);
+      return;
+    }
     createSolicitud(reqs)
       .then((res) => {
         setStatus(Status.SUCCESS);
@@ -52,6 +59,10 @@ export default function IndexCreate() {
     setReqs({ ...baseInfo });
     setStatus(Status.NOT_SUBMITTED);
     setError('');
+  }
+
+  const handleError = (e: string) => {
+    setError(e);
   }
 
   function getEndTitles(): string[] {
@@ -77,16 +88,22 @@ export default function IndexCreate() {
           </div>
 
           {/* Formulario */}
-          <SolicitudForm reqs={reqs} handleChange={handleChange} />
+          <SolicitudForm
+            reqs={reqs}
+            status={status}
+            handleChange={handleChange}
+            setError={handleError} />
         </div>
         {/* Botón de confirmación */}
         <div className='mt-14'>
-          <div className='text-center text-moni-error italic'>{error}</div>
+          <div className='text-center text-moni-error italic'>
+          {status === Status.ERROR ? error : ''}
+          </div>
           <button
             className='big-button mt-1 flex justify-center'
             onClick={handleSubmit}
           >
-            {status === Status.LOADING ? <Spinner /> : 'Confirmar'}
+            {status === Status.LOADING ? <Spinner classes='h-7 text-white' /> : 'Confirmar'}
           </button>
         </div>
       </div>
@@ -97,32 +114,38 @@ export default function IndexCreate() {
     <div className='justify-between-dashboard'>
       <div className='flex flex-col'>
         {/* Titulos */}
-        <div className='text-center mb-4'>
+        <div className='text-center'>
           <h1 className='font-bold text-moni-blue mb-2'>{getEndTitles()[0]}</h1>
           <h2
-            className={`mb-2 text-center font-extrabold ${
+            className={`text-center font-extrabold ${
               res.granted ? 'text-green-600' : 'text-moni-error'
             }`}
           >
             {getEndTitles()[1]}
           </h2>
         </div>
-
-        {/* Mensaje de ayuda */}
-        <div>
-          <p className='text-black mx-6'>
-            {res.granted
-              ? 'En breve recibirás un correo con los detalles de tu préstamo.'
-              : 'Puedes intentarlo nuevamente con otro monto.'}{' '}
-            Para mas información por favor comunicarse con nosotros.
-          </p>
-        </div>
+        <div className='flex flex-row justify-center'>{
+          res.granted
+            ? <Check classes='w-48 text-green-600' />
+            : <X classes='w-48 text-moni-error'/>
+          }</div>
       </div>
 
-      {/* Botón de reintento */}
-      <button className='big-button' onClick={handleReset}>
-        Realizar otra solicitud
-      </button>
+      <div>
+        {/* Mensaje de ayuda */}
+        <div>
+          <p className='text-gray-600 text-center mx-6 mb-1'>
+            {res.granted
+              ? 'En breve recibirás un correo con los detalles de tu préstamo'
+              : 'Puedes intentarlo nuevamente con otro monto'}
+          </p>
+        </div>
+
+        {/* Botón de reintento */}
+        <button className='big-button' onClick={handleReset}>
+          Realizar otra solicitud
+        </button>
+      </div>
     </div>
   );
 }

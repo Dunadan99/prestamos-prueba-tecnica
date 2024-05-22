@@ -88,7 +88,7 @@ button:focus-visible {
 }
 
 .delete-button {
-  @apply bg-moni-error text-white base-button;
+  @apply bg-moni-error text-white base-button flex flex-row justify-center items-center;
 }
 
 .login-button {
@@ -105,7 +105,7 @@ button:focus-visible {
 }
 
 .solicitud-card {
-  @apply bg-white rounded-xl py-3 px-2.5 text-black;
+  @apply bg-white rounded-xl py-3 px-2.5 text-black select-none hover:bg-gray-100 hover:drop-shadow-lg;
 }
 
 .justify-between-dashboard {
