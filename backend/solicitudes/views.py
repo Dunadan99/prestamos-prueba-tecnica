@@ -18,12 +18,12 @@ class SolicitudViewSet(ModelViewSet):
     serializer_class = SolicitudSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['first_name', 'last_name', 'dni']
-    ordering = ['creation_date']
+    ordering = ['-creation_date']
 
     def get_permissions(self):
-        if self.action != 'create':
-            return [permissions.IsAuthenticated()]
-        return []
+        if self.action == 'create':
+            return []
+        return [permissions.IsAuthenticated()]
 
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
