@@ -24,7 +24,7 @@ const SolicitudItem: React.FC<SolicitudItemProps> = ({sol, handleDelete, isDelet
     <div key={sol.id} className='solicitud-card'>
       {/* Nombre y Precio */}
       <div className='flex flex-row justify-between'>
-        <h3 className='font-extrabold'>{sol.first_name} {sol.last_name}</h3>
+        <h3 className='font-extrabold truncate pr-5'>{sol.first_name} {sol.last_name}</h3>
         <h3 className={'font-bold ' + getGrantedColor()}>
           {priceFormatter.format(sol.amount as number)}
         </h3>

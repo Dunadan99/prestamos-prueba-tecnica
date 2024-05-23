@@ -15,12 +15,12 @@ class Solicitud(models.Model):
     gender = models.CharField(max_length=20, choices=Gender, null=False, blank=False)
     granted = models.BooleanField(default=False)
     dni = models.PositiveIntegerField(
-        validators=[MaxValueValidator(9999999999)],
+        validators=[MinValueValidator(1000000),MaxValueValidator(999999999)],
         null=False,
         blank=False
     )
     amount = models.DecimalField(
-        max_digits=10,
+        max_digits=12,
         decimal_places=2,
         validators=[MinValueValidator(Decimal(1))],
         null=False, blank=False

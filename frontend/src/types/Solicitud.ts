@@ -42,8 +42,8 @@ export function solicitudValidation(
     last_name: !(sol.last_name ? validators.isValidName(sol.last_name) : checkEmpty),
     email: !(sol.email ? validators.isValidEmail(sol.email) : checkEmpty),
     dni: !(sol.dni ? validators.isValidDNI(sol.dni.toString()) : checkEmpty),
-    amount: !(sol.amount 
-      ? Number(sol.amount) > 0 && Number(sol.amount) <= 9999999999
+    amount: !(sol.amount
+      ? Number(sol.amount) > 0 && Number(sol.amount) <= 9999999999.99
       : checkEmpty),
   };
 }

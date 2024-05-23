@@ -57,6 +57,7 @@ export default function IndexCreate() {
 
   function handleReset() {
     setReqs({ ...baseInfo });
+    setRes({} as Solicitud);
     setStatus(Status.NOT_SUBMITTED);
     setError('');
   }

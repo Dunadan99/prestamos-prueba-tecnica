@@ -1,17 +1,10 @@
-from django.http import HttpResponse
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status, permissions, filters
-from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from solicitudes.models import Solicitud
 from solicitudes.serializers import SolicitudSerializer
 from solicitudes.utils import request_loan
-
-
-def index(request):
-    return HttpResponse('Hello, World!')
-
 
 class SolicitudViewSet(ModelViewSet):
     queryset = Solicitud.objects.all()

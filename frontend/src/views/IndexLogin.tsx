@@ -15,7 +15,7 @@ export default function IndexLogin() {
   };
 
   const [reqs, setReqs] = useState({ ...baseInfo });
-  const [status, setStatus] = useState(Status.LOADING);
+  const [status, setStatus] = useState(Status.NOT_SUBMITTED);
   const [error, setError] = useState('' as string);
 
   useEffect(() => {

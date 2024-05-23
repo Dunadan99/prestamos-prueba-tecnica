@@ -1,5 +1,6 @@
 from django.db import models
 from requests import get
+from prestamosBack.settings import MONI_API_URL, MONI_API_TOKEN
 
 
 class Gender(models.TextChoices):
@@ -10,8 +11,8 @@ class Gender(models.TextChoices):
 
 
 def request_loan(dni):
-    url = f'https://api.moni.com.ar/api/v4/scoring/pre-score/{dni}'
-    headers = {'credential': 'ZGpzOTAzaWZuc2Zpb25kZnNubm5u'}
+    url = f'{MONI_API_URL}{dni}'
+    headers = {'credential': f'{MONI_API_TOKEN}'}
 
     try:
         response = get(url, headers=headers)

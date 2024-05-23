@@ -21,9 +21,8 @@ const SolicitudForm: React.FC<SolicitudFormProps> = ({
     const isSubmitted = status !== Status.NOT_SUBMITTED;
     const errors = solicitudValidation(reqs, !isSubmitted);
 
-    if (Object.values(errors).some((it) => it)) {
-      setError('Hay errores en el formulario');
-    }
+    setError(Object.values(errors).some((it) => it) ? 'Hay errores en el formulario' : '');
+
     return errors;
   }
 
