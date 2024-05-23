@@ -39,7 +39,7 @@ const SolicitudItem: React.FC<SolicitudItemProps> = ({sol, handleDelete, isDelet
       </div>
 
       {/* DNI y Género */}
-      <p>{sol.dni} - {getGender(sol.gender)}</p>
+      <p>{getGender(sol.gender)} • {sol.dni}</p>
 
       <div className='flex flex-row justify-between items-end'>
         {/* Fecha de creación */}

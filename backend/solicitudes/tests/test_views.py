@@ -36,6 +36,8 @@ class SolicitudViewSetTests(APITestCase):
         self.assertTrue('access' in data)
         self.assertTrue('refresh' in data)
 
+        # La unica forma de conseguir el token de refresh es mediante el login,
+        # con lo cual tuve que dejar juntas las pruebas
         res = self.client.post(self.URL_refresh, {'refresh': data['refresh']})
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertTrue('access' in loads(res.content))
